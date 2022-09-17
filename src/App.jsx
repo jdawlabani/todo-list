@@ -1,10 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Task from "./Components/Task";
 
 function App() {
   const [list, setList] = useState([]);
   const [task, setTask] = useState("");
+  
+  useEffect(() => {
+    const list = JSON.parse(localStorage.getItem('list'));
+    if (list) {
+      setList(list);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('list', JSON.stringify(list));
+  }, [list]);
+
+
 
   //submit task to todo list
   const submitTask = (e) => {
@@ -25,7 +38,6 @@ function App() {
   //deletes task, where i is the index of the task
   const deleteTask = (i) => {
     const filteredList = list.filter((task, index) => {return index !== i})
-    console.log(filteredList)
     setList(filteredList)
   };
 
